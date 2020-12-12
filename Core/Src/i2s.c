@@ -32,7 +32,7 @@ void MX_I2S1_Init(void)
 
   hi2s1.Instance = SPI1;
   hi2s1.Init.Mode = I2S_MODE_MASTER_TX;
-  hi2s1.Init.Standard = I2S_STANDARD_PHILIPS;
+  hi2s1.Init.Standard = I2S_STANDARD_MSB;
   hi2s1.Init.DataFormat = I2S_DATAFORMAT_16B;
   hi2s1.Init.MCLKOutput = I2S_MCLKOUTPUT_DISABLE;
   hi2s1.Init.AudioFreq = I2S_AUDIOFREQ_44K;

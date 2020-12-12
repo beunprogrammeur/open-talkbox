@@ -9,23 +9,22 @@
 #include "gpio.h"
 #include "main.h"
 #include "i2s.h"
-#include <stdint.h>
+
+#include "waveform_generator.h"
+
+
+auto wfGenerator = TalkBox::WaveformGenerator<1604, 44100>();
 
 void entrypoint()
 {
-	uint16_t buffer[256];
-
-	for(int i = 0; i < 256; i++)
-	{
-		buffer[i] = (i % 10 >= 5) ? 250 : 50;
-	}
+	// the lowest key on the piano (A0) has a period of 1603.7 samples
+	// TODO: increase the sample time to compensate for pitch-bend effect pedals
+	wfGenerator.SetWaveform(TalkBox::Waveform::SawTooth);
+	wfGenerator.GenerateWaveForm(4186, 0.25);
 
 	while(true)
 	{
-		//auto state = HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin);
-		//HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, state);
-
-		HAL_I2S_Transmit(&hi2s1, buffer, sizeof(buffer) / sizeof(buffer[0]), 10);
-		//HAL_Delay(100);
+		auto& buffer = wfGenerator.AquireActiveBuffer();
+		HAL_I2S_Transmit(&hi2s1, reinterpret_cast<uint16_t*>(buffer.Data().data()), buffer.Size(), 10);
 	}
 }

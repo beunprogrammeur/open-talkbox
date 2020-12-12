@@ -2,9 +2,11 @@ Debug/*
 Release/*
 MDK-ARM/*
 EWARM/*
+
 !*/*.hzp
 !*/*hzs
 
 *.o
 
 .mxproject
+
