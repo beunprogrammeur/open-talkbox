@@ -62,12 +62,12 @@ void Error_Handler(void);
 #define LED_GPIO_Port GPIOC
 #define KEY_Pin GPIO_PIN_0
 #define KEY_GPIO_Port GPIOA
-#define AMP_WS_Pin GPIO_PIN_4
-#define AMP_WS_GPIO_Port GPIOA
-#define AMP_CK_Pin GPIO_PIN_5
-#define AMP_CK_GPIO_Port GPIOA
-#define AMP_SD_Pin GPIO_PIN_7
-#define AMP_SD_GPIO_Port GPIOA
+#define AMP_CLK_Pin GPIO_PIN_10
+#define AMP_CLK_GPIO_Port GPIOB
+#define AMP_DATA_Pin GPIO_PIN_15
+#define AMP_DATA_GPIO_Port GPIOB
+#define AMP_CH_SELECT_Pin GPIO_PIN_9
+#define AMP_CH_SELECT_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
