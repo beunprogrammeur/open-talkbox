@@ -65,11 +65,11 @@
 
 #define USBD_VID     1155
 #define USBD_LANGID_STRING     1033
-#define USBD_MANUFACTURER_STRING     "STMicroelectronics"
+#define USBD_MANUFACTURER_STRING     "BOSSCorp"
 #define USBD_PID_FS     22336
-#define USBD_PRODUCT_STRING_FS     "STM32 Audio Class"
-#define USBD_CONFIGURATION_STRING_FS     "AUDIO Config"
-#define USBD_INTERFACE_STRING_FS     "AUDIO Interface"
+#define USBD_PRODUCT_STRING_FS     "BOSSCorp TalkBox"
+#define USBD_CONFIGURATION_STRING_FS     "midi streaming configuration"
+#define USBD_INTERFACE_STRING_FS     "midi streaming interface"
 
 #define USB_SIZ_BOS_DESC            0x0C
 
@@ -156,30 +156,24 @@ USBD_DescriptorsTypeDef FS_Desc =
 /** USB standard device descriptor. */
 __ALIGN_BEGIN uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
 {
-  0x12,                       /*bLength */
-  USB_DESC_TYPE_DEVICE,       /*bDescriptorType*/
-#if (USBD_LPM_ENABLED == 1)
-  0x01,                       /*bcdUSB */ /* changed to USB version 2.01
-                                             in order to support LPM L1 suspend
-                                             resume test of USBCV3.0*/
-#else
-  0x00,                       /*bcdUSB */
-#endif /* (USBD_LPM_ENABLED == 1) */
-  0x02,
-  0x00,                       /*bDeviceClass*/
-  0x00,                       /*bDeviceSubClass*/
-  0x00,                       /*bDeviceProtocol*/
-  USB_MAX_EP0_SIZE,           /*bMaxPacketSize*/
-  LOBYTE(USBD_VID),           /*idVendor*/
-  HIBYTE(USBD_VID),           /*idVendor*/
-  LOBYTE(USBD_PID_FS),        /*idProduct*/
-  HIBYTE(USBD_PID_FS),        /*idProduct*/
-  0x00,                       /*bcdDevice rel. 2.00*/
-  0x02,
-  USBD_IDX_MFC_STR,           /*Index of manufacturer  string*/
-  USBD_IDX_PRODUCT_STR,       /*Index of product string*/
-  USBD_IDX_SERIAL_STR,        /*Index of serial number string*/
-  USBD_MAX_NUM_CONFIGURATION  /*bNumConfigurations*/
+		  0x12,                       /*bLength */
+		  USB_DESC_TYPE_DEVICE,       /*bDescriptorType*/
+		  0x10,                       /*bcdUSB */
+		  0x01,
+		  0x00,                       /*bDeviceClass*/
+		  0x00,                       /*bDeviceSubClass*/
+		  0x00,                       /*bDeviceProtocol*/
+		  USB_MAX_EP0_SIZE,           /*bMaxPacketSize*/
+		  LOBYTE(USBD_VID),           /*idVendor*/
+		  HIBYTE(USBD_VID),           /*idVendor*/
+		  LOBYTE(USBD_PID_FS),        /*idProduct*/
+		  HIBYTE(USBD_PID_FS),        /*idProduct*/
+		  0x00,                       /*bcdDevice rel. 1.00*/
+		  0x01,
+		  USBD_IDX_MFC_STR,           /*Index of manufacturer  string*/
+		  USBD_IDX_PRODUCT_STR,       /*Index of product string*/
+		  USBD_IDX_SERIAL_STR,        /*Index of serial number string*/
+		  USBD_MAX_NUM_CONFIGURATION  /*bNumConfigurations*/
 };
 
 /* USB_DeviceDescriptor */

@@ -27,7 +27,7 @@ void entrypoint()
 	wfGenerator.GenerateWaveForm(frequency, 1);
 	auto& buffer = wfGenerator.AquireActiveBuffer();
 
-	HAL_I2S_Transmit_DMA(&hi2s2, reinterpret_cast<uint16_t*>(buffer.Data().data()), buffer.Size());
+	//HAL_I2S_Transmit_DMA(&hi2s2, reinterpret_cast<uint16_t*>(buffer.Data().data()), buffer.Size());
 
 	while(true)
 	{
