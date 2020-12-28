@@ -16,8 +16,10 @@
 
 extern USBD_MIDI_ItfTypeDef USBD_MIDI_Interface_fops_FS;
 
-int8_t MIDI_Transmit(uint8_t* buff, uint8_t length);
-int8_t MIDI_Receive(uint8_t* buff, uint8_t length);
+void MIDI_CC_Received(uint8_t channel, uint8_t code, uint16_t value);
+void MIDI_Note_On_Received(uint8_t channel, uint8_t key, uint16_t velocity);
+void MIDI_Note_Off_received(uint8_t channel, uint8_t key);
+
 
 #ifdef __cplusplus
 }
