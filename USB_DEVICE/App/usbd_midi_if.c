@@ -9,8 +9,8 @@
 #include "usbd_midi_if.h"
 #include "usbd_midi.h"
 
-__weak void MIDI_CC_Received(uint8_t channel, uint8_t code, uint16_t value) {}
-__weak void MIDI_Note_On_Received(uint8_t channel, uint8_t key, uint16_t velocity) {}
+__weak void MIDI_CC_Received(uint8_t channel, uint8_t code, uint8_t value) {}
+__weak void MIDI_Note_On_Received(uint8_t channel, uint8_t key, uint8_t velocity) {}
 __weak void MIDI_Note_Off_received(uint8_t channel, uint8_t key) {}
 
 
