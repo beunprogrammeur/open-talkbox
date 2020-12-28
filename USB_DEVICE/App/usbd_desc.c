@@ -65,11 +65,11 @@
 
 #define USBD_VID     1155
 #define USBD_LANGID_STRING     1033
-#define USBD_MANUFACTURER_STRING     "BOSSCorp"
-#define USBD_PID_FS     22336
-#define USBD_PRODUCT_STRING_FS     "BOSSCorp TalkBox"
-#define USBD_CONFIGURATION_STRING_FS     "midi streaming configuration"
-#define USBD_INTERFACE_STRING_FS     "midi streaming interface"
+#define USBD_MANUFACTURER_STRING      ("BOSSCorp")
+#define USBD_PID_FS     22339
+#define USBD_PRODUCT_STRING_FS        ("BOSSCorp TalkBox")
+#define USBD_CONFIGURATION_STRING_FS  ("midi streaming configuration")
+#define USBD_INTERFACE_STRING_FS      ("midi streaming interface")
 
 #define USB_SIZ_BOS_DESC            0x0C
 
