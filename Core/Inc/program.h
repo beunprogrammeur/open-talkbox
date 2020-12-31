@@ -14,6 +14,8 @@ extern "C"
 {
 #endif
 
+void UpdatePlayFrequency(float frequency, float amplitude);
+
 void entrypoint();
 
 #ifdef __cplusplus

@@ -19,6 +19,7 @@ class Tone
 private:
 public:
 	static float GetFrequency(Note note, int octave);
+	static float GetFrequency(int midiPitch);
 };
 
 } // namespace TalkBox
