@@ -16,9 +16,8 @@
 
 extern USBD_MIDI_ItfTypeDef USBD_MIDI_Interface_fops_FS;
 
-void MIDI_CC_Received(uint8_t channel, uint8_t code, uint8_t value);
-void MIDI_Note_On_Received(uint8_t channel, uint8_t key, uint8_t velocity);
-void MIDI_Note_Off_received(uint8_t channel, uint8_t key);
+void MIDI_Message_Received(uint8_t status, uint8_t data1, uint8_t data2);
+
 
 
 #ifdef __cplusplus

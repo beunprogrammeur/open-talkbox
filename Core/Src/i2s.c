@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under Ultimate Liberty license
@@ -36,7 +36,7 @@ void MX_I2S2_Init(void)
   hi2s2.Init.Standard = I2S_STANDARD_PHILIPS;
   hi2s2.Init.DataFormat = I2S_DATAFORMAT_16B;
   hi2s2.Init.MCLKOutput = I2S_MCLKOUTPUT_DISABLE;
-  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_44K;
+  hi2s2.Init.AudioFreq = I2S_AUDIOFREQ_16K;
   hi2s2.Init.CPOL = I2S_CPOL_LOW;
   hi2s2.Init.ClockSource = I2S_CLOCK_PLL;
   hi2s2.Init.FullDuplexMode = I2S_FULLDUPLEXMODE_DISABLE;
@@ -58,12 +58,12 @@ void HAL_I2S_MspInit(I2S_HandleTypeDef* i2sHandle)
   /* USER CODE END SPI2_MspInit 0 */
     /* I2S2 clock enable */
     __HAL_RCC_SPI2_CLK_ENABLE();
-  
+
     __HAL_RCC_GPIOB_CLK_ENABLE();
-    /**I2S2 GPIO Configuration    
+    /**I2S2 GPIO Configuration
     PB10     ------> I2S2_CK
     PB15     ------> I2S2_SD
-    PB9     ------> I2S2_WS 
+    PB9     ------> I2S2_WS
     */
     GPIO_InitStruct.Pin = AMP_CLK_Pin|AMP_DATA_Pin|AMP_CH_SELECT_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -79,8 +79,8 @@ void HAL_I2S_MspInit(I2S_HandleTypeDef* i2sHandle)
     hdma_spi2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
     hdma_spi2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
     hdma_spi2_tx.Init.MemInc = DMA_MINC_ENABLE;
-    hdma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-    hdma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+    hdma_spi2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
     hdma_spi2_tx.Init.Mode = DMA_CIRCULAR;
     hdma_spi2_tx.Init.Priority = DMA_PRIORITY_LOW;
     hdma_spi2_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
@@ -107,11 +107,11 @@ void HAL_I2S_MspDeInit(I2S_HandleTypeDef* i2sHandle)
   /* USER CODE END SPI2_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_SPI2_CLK_DISABLE();
-  
-    /**I2S2 GPIO Configuration    
+
+    /**I2S2 GPIO Configuration
     PB10     ------> I2S2_CK
     PB15     ------> I2S2_SD
-    PB9     ------> I2S2_WS 
+    PB9     ------> I2S2_WS
     */
     HAL_GPIO_DeInit(GPIOB, AMP_CLK_Pin|AMP_DATA_Pin|AMP_CH_SELECT_Pin);
 
@@ -121,7 +121,7 @@ void HAL_I2S_MspDeInit(I2S_HandleTypeDef* i2sHandle)
 
   /* USER CODE END SPI2_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 
