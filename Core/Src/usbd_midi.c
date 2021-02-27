@@ -204,5 +204,3 @@ uint8_t* USBD_MIDI_GetFSCfgDesc(uint16_t* length)
 	*length = sizeof(USBD_MIDI_CfgFSDesc);
 	return USBD_MIDI_CfgFSDesc;
 }
-
-

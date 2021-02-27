@@ -9,56 +9,86 @@
 #include "gpio.h"
 #include "main.h"
 #include "i2s.h"
-#include "tone.h"
-#include "note.h"
 
 #include "usbd_midi_if.h"
-#include "waveform_generator.h"
+#include "midi/imidi_source.h"
+#include "synthesis/synthesizers/synthesizer.h"
+#include "synthesis/sound_sources/isound_source.h"
+#include "embedded_sound_source.h"
+#include "midi/synthesizer_midi_sink.h"
+#include "synth.h"
+#include "synthesis/buffer.h"
+#include <queue>
 
+using namespace BOSSCorp::Midi;
+IMidiSource midiSource;
 
-auto wfGenerator = TalkBox::WaveformGenerator<2400, 44100>();
+volatile bool writeFirstHalf = false;
+volatile bool writeSecondHalf = false;
 
-void UpdatePlayFrequency(float frequency, float amplitude)
+std::queue<MidiEvent> midiEventQueue;
+
+void MIDI_Message_Received(uint8_t status, uint8_t data1, uint8_t data2)
 {
-	wfGenerator.GenerateWaveForm(frequency,  amplitude);
-	auto& buffer = wfGenerator.AquireActiveBuffer();
-
-	HAL_I2S_DMAStop(&hi2s2);
-	HAL_I2S_Transmit_DMA(&hi2s2, reinterpret_cast<uint16_t*>(buffer.Data().data()), buffer.Size());
+	//midiEventQueue.push(MidiEvent(static_cast<Status>(status), data1, data2));
+	midiSource.send(MidiEvent(static_cast<Status>(status), data1, data2));
 }
 
-void MIDI_CC_Received(uint8_t channel, uint8_t code, uint8_t value)
+void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
-
+	writeFirstHalf = true;
 }
 
-void MIDI_Note_On_Received(uint8_t channel, uint8_t key, uint8_t velocity)
+void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
-	if(channel != 0) return;
-
-	float frequency = TalkBox::Tone::GetFrequency(key);
-	UpdatePlayFrequency(frequency, 1.0 / 127 * velocity);
+	writeSecondHalf = true;
 }
 
-void MIDI_Note_Off_received(uint8_t channel, uint8_t key)
-{
-	HAL_I2S_DMAStop(&hi2s2);
-}
+
 
 
 void entrypoint()
 {
-	wfGenerator.SetWaveform(TalkBox::Waveform::SawTooth);
+	synth s(10);
+	s.init();
+	SynthesizerMidiSink synthSink(Channel::Channel1, s);
+	midiSource.subscribe(synthSink);
 
-	float frequency = TalkBox::Tone::GetFrequency(TalkBox::Note::A, 4);
-	float frequency2 = TalkBox::Tone::GetFrequency(103);
-	wfGenerator.GenerateWaveForm(frequency, 1);
-	auto& buffer = wfGenerator.AquireActiveBuffer();
+	constexpr int dataSize   = 128;
+	constexpr int samplerate = 15980;
+	constexpr int bufferSize = dataSize / 2;
+	int16_t* data = new int16_t[dataSize];
 
-	HAL_I2S_Transmit_DMA(&hi2s2, reinterpret_cast<uint16_t*>(buffer.Data().data()), buffer.Size());
+	BOSSCorp::Synthesis::Buffer buffera(bufferSize, samplerate, data);
+	BOSSCorp::Synthesis::Buffer bufferb(bufferSize, samplerate, data + dataSize);
+
+	for(int i = 0; i < dataSize; i++)
+	{
+		data[i] = 0;
+	}
+
+	HAL_I2S_Transmit_DMA(&hi2s2, reinterpret_cast<uint16_t*>(data), dataSize);
 
 	while(true)
 	{
+		while(!midiEventQueue.empty())
+		{
+			MidiEvent event = midiEventQueue.front();
+			midiSource.send(event);
+			midiEventQueue.pop();
+		}
 
+		if(writeFirstHalf)
+		{
+			writeFirstHalf = false;
+			s.process(buffera);
+		}
+
+		if(writeSecondHalf)
+		{
+			writeSecondHalf = false;
+			s.process(bufferb);
+		}
 	}
 }
+

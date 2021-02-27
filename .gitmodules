@@ -1,0 +1,3 @@
+[submodule "submodules/synth"]
+	path = submodules/synth
+	url = https://github.com/beunprogrammeur/synthesizer.git
